@@ -4,9 +4,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class DatabaseTable {
-    public final Map<String, DatabaseEntry<?>> map = new HashMap<>();
+    protected final Map<String, DatabaseEntry<?>> map = new HashMap<>();
     public final String name;
-    
+
     public DatabaseTable(String name) {
         this.name = name;
     }
@@ -25,5 +25,13 @@ public class DatabaseTable {
 
     public void set(String key, Object obj, Class<?> type) {
         map.put(key, DatabaseEntry.of(obj, type));
+    }
+
+    public int size() {
+        return map.size();
+    }
+
+    public String toString() {
+        return name + "[" + size() + "]";
     }
 }

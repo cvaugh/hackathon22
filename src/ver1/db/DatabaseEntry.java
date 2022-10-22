@@ -1,10 +1,12 @@
 package ver1.db;
 
 public class DatabaseEntry<T> {
+    protected final Class<T> type;
     private T obj;
 
-    public DatabaseEntry(T obj) {
+    private DatabaseEntry(T obj, Class<T> type) {
         this.obj = obj;
+        this.type = type;
     }
 
     public T get() {
@@ -15,6 +17,6 @@ public class DatabaseEntry<T> {
         if(!(type.isInstance(object))) {
             throw new RuntimeException(String.format("%s is not an instance of %s", object, type.getName()));
         }
-        return new DatabaseEntry<T>(type.cast(object));
+        return new DatabaseEntry<T>(type.cast(object), type);
     }
 }
