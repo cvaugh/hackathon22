@@ -2,32 +2,44 @@ package ver1;
 
 public class Patient implements Comparable<Patient> {
     protected int id;
-    protected PatientStatus status;
+    protected String status;
 
     public Patient(int id) {
         this.id = id;
-        status = PatientStatus.WAITING;
+        this.status = "WAITING";
     }
 
     public int getId() {
         return id;
     }
 
-    public PatientStatus getStatus() {
+    public String getStatus() {
         return status;
     }
 
     public int compareTo(Patient p) {
-        int a = status.ordinal();
-        int b = p.status.ordinal();
+        int a = order(this.status);
+        int b = order(p.status);
 
         if(a == b) {
             return this.id - p.id;
         }
-        return status.ordinal() - p.status.ordinal();
+        return a - b;
+    }
+    
+    private int order(String s) {
+    	if (s.equals("WAITING")
+    			return 0;
+    	if (s.equals("READY")
+    			return 1;
+    	if (s.equals("IN_PROGRESS")
+    			return 2;
+    	if (s.equals("ON_HOLD")
+    			return 3;
+    	return 4;
     }
 
-    public void setStatus(PatientStatus status) {
+    public void setStatus(String status) {
         this.status = status;
     }
 
