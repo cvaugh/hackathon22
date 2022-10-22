@@ -16,6 +16,14 @@ public class Room implements Comparable<Room> {
         return false;
     }
 
+    public Patient removePatient() {
+        if(isFree()) return null;
+        Patient pat = this.getPatient();
+        pat.setStatus(PatientStatus.CHECKED_OUT);
+        p = null;
+        return pat;
+    }
+
     public int getRoomNumber() {
         return roomNumber;
     }
