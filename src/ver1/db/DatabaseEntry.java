@@ -13,6 +13,17 @@ public class DatabaseEntry<T> {
         return obj;
     }
 
+    public <U> U get(Class<U> type) {
+        if(!(type.isInstance(obj))) {
+            throw new RuntimeException(String.format("%s is not an instance of %s", obj, type.getName()));
+        }
+        return type.cast(obj);
+    }
+
+    public String toString() {
+        return "DatabaseEntry<" + type.getName() + ">";
+    }
+
     public static <T> DatabaseEntry<T> of(Object object, Class<T> type) {
         if(!(type.isInstance(object))) {
             throw new RuntimeException(String.format("%s is not an instance of %s", object, type.getName()));
