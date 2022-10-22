@@ -1,9 +1,11 @@
-package application;
-	
+package ver1;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import javafx.application.Application;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.stage.Stage;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -43,44 +45,84 @@ public class Main extends Application {
 		
 		VBox root = new VBox();
 		root.getStyleClass().add("root");
-		return null;
+		root.getChildren().addAll(buttons, displayLists);
+		return root;
 	}
 
 	private HBox buildDisplay() {
+		HBox display = new HBox();
 		VBox vBoxWaitingPatients = buildListOfWaitingPatients();
-		VBox vBoxFreeRooms = buildListOfFreeRooms();
-		VBox vBoxSortedRooms = buildListOfSortedRooms();
-		return null;
+//		VBox vBoxFreeRooms = buildListOfFreeRooms();
+//		VBox vBoxSortedRooms = buildListOfSortedRooms();
+		display.getChildren().add(vBoxWaitingPatients);
+		
+		return display;
 	}
 
-	private VBox buildListOfSortedRooms() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+//	private VBox buildListOfSortedRooms() {
+//		lvwSortedRooms.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+//		lvwSortedRooms.setPrefHeight(150);
+//		lvwSortedRooms.setPrefWidth(120);
+//		
+//		ArrayList<Room> rooms = azaleaHealth.getRooms();
+//		
+//		for(Room r: rooms) {
+//			lvwFreeRooms.getItems().add(r.toString());
+//		}
+//		
+//		VBox display = new VBox();
+//		display.getStyleClass().add("list");
+//		display.getChildren().add(lvwSortedRooms);
+//		
+//		return display;
+//	}
 
-	private VBox buildListOfFreeRooms() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+//	private VBox buildListOfFreeRooms() {
+//		lvwFreeRooms.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+//		lvwFreeRooms.setPrefHeight(150);
+//		lvwFreeRooms.setPrefWidth(120);
+//		
+//		ArrayList<Room> freeRooms = azaleaHealth.getFreeRooms();
+//		
+//		for(Room r: freeRooms) {
+//			lvwFreeRooms.getItems().add(r.toString());
+//		}
+//		
+//		VBox display = new VBox();
+//		display.getStyleClass().add("list");
+//		display.getChildren().add(lvwFreeRooms);
+//		
+//		return display;
+//	}
 
 	private VBox buildListOfWaitingPatients() {
 		lvwWaitingPatients.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 		lvwWaitingPatients.setPrefHeight(150);
-		lvwWaitingPatients.setPrefWidth(120);
+		lvwWaitingPatients.setPrefWidth(200);
 		
-		ArrayList<Patient> waiting = azaleaHealth.getWaiting();
+		List<Patient> waiting = azaleaHealth.getWaiting();
+		int i = 0;
+		for(Patient p: waiting) {
+			System.out.println(i);
+			i++;
+			lvwWaitingPatients.getItems().add(p.toString());
+		}
 		
 		VBox display = new VBox();
 		display.getStyleClass().add("list");
+		display.getChildren().add(lvwWaitingPatients);
 		
 		return display;
 	}
+	
+	
 
 	private VBox buildButtons() {
 		VBox buttonsBox = new VBox();
 		buttonsBox.getStyleClass().add("buttons_box");
 		
 		btnAddPatient = new Button("Add Patient");
+		btnAddPatient.setOnAction(new CreateAddPatientEventHandler());
 		
 		
 		btnMoveUp = new Button("Move Up");
@@ -92,6 +134,28 @@ public class Main extends Application {
 		
 		return buttonsBox;
 	}
+	
+	
+	public class CreateAddPatientEventHandler implements EventHandler<ActionEvent> {
+
+		@Override
+		public void handle(ActionEvent arg0) {
+			int patientID = azaleaHealth.addPatient();
+			List<Patient> patients = azaleaHealth.getPatients();
+			Patient patient = null;
+			
+			for(Patient p: patients) {
+				if(p.getId() == patientID)
+					patient = p;
+			}
+			
+			if(patient != null) {
+				System.out.println("Adding Patient...");
+				lvwWaitingPatients.getItems().add(patient.toString());
+			}
+		}
+		
+	}
 
 	public static void main(String[] args) {
 		launch(args);
@@ -99,9 +163,8 @@ public class Main extends Application {
 	
 	private Hospital createHospital() {
 		Hospital azaleaHealth = new Hospital();
-		
-		
-		
-		return null;
+
+		return azaleaHealth;
 	}
 }
+

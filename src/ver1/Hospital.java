@@ -10,8 +10,8 @@ public class Hospital {
     private int nextID = 1;
 
     public Hospital() {
-        this.patients = new List<>();
-        this.rooms = new List<>();
+        this.patients = new ArrayList<>();
+        this.rooms = new ArrayList<>();
     }
 
     public Hospital(Collection<Room> rooms) {
@@ -29,14 +29,13 @@ public class Hospital {
     public List<Room> getRooms() {
         return rooms;
     }
-    
-    public List<Room> getFreeRooms(){
-    	List<Room> free = new List<>();
-    	for (Room r : rooms) {
-    		if (r.isFree)
-    			free.add(r);
-    	}
-    	return free;
+
+    public List<Room> getFreeRooms() {
+        List<Room> free = new ArrayList<>();
+        for(Room r : rooms) {
+            if(r.isFree()) free.add(r);
+        }
+        return free;
     }
 
     public List<Patient> getPatients() {
@@ -52,7 +51,7 @@ public class Hospital {
     public List<Patient> getWaiting() {
         List<Patient> waiting = new ArrayList<>();
         for(Patient p : patients) {
-            if(p.getStatus().equals("WAITING")) waiting.add(p);
+            if(p.getStatus() == PatientStatus.WAITING) waiting.add(p);
         }
         return waiting;
     }
@@ -60,7 +59,7 @@ public class Hospital {
     public List<Patient> getReady() {
         List<Patient> ready = new ArrayList<>();
         for(Patient p : patients) {
-            if(p.getStatus().equals("READY") ready.add(p);
+            if(p.getStatus() == PatientStatus.READY) ready.add(p);
         }
         return ready;
     }
