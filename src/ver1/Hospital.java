@@ -52,7 +52,7 @@ public class Hospital {
     public List<Patient> getWaiting() {
         List<Patient> waiting = new ArrayList<>();
         for(Patient p : patients) {
-            if(p.getStatus() == PatientStatus.WAITING) waiting.add(p);
+            if(p.getStatus().equals("WAITING")) waiting.add(p);
         }
         return waiting;
     }
@@ -60,7 +60,7 @@ public class Hospital {
     public List<Patient> getReady() {
         List<Patient> ready = new ArrayList<>();
         for(Patient p : patients) {
-            if(p.getStatus() == PatientStatus.READY) ready.add(p);
+            if(p.getStatus().equals("READY") ready.add(p);
         }
         return ready;
     }
