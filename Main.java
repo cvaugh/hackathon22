@@ -1,6 +1,7 @@
-package application;
+package ver1;
 	
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javafx.application.Application;
@@ -19,7 +20,7 @@ import javafx.scene.layout.VBox;
 
 
 public class Main extends Application {
-	protected Button btnAddPatient, btnMoveUp, btnMoveDown, btnAddRoom;
+	protected Button btnNewPatient, btnMoveUp, btnMoveDown, btnAddRoom, btnAddPatient, btnHold, btnCheckout, btnInProgress;
 	protected TextArea txaMessage;
 	protected ListView<String> lvwWaitingPatients = new ListView<>();
 	protected ListView<String> lvwFreeRooms = new ListView<>();
@@ -53,8 +54,8 @@ public class Main extends Application {
 		HBox display = new HBox();
 		VBox vBoxWaitingPatients = buildListOfWaitingPatients();
 		VBox vBoxFreeRooms = buildListOfFreeRooms();
-//		VBox vBoxSortedRooms = buildListOfSortedRooms();
-		display.getChildren().addAll(vBoxWaitingPatients, vBoxFreeRooms);
+		VBox vBoxSortedRooms = buildListOfSortedRooms();
+		display.getChildren().addAll(vBoxWaitingPatients, vBoxFreeRooms,vBoxSortedRooms);
 		
 		return display;
 	}
@@ -62,13 +63,7 @@ public class Main extends Application {
 	private VBox buildListOfSortedRooms() {
 		lvwSortedRooms.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 		lvwSortedRooms.setPrefHeight(150);
-		lvwSortedRooms.setPrefWidth(120);
-		
-		List<Room> rooms = azaleaHealth.getRooms();
-		
-		for(Room r: rooms) {
-			lvwFreeRooms.getItems().add(r.toString());
-		}
+		lvwSortedRooms.setPrefWidth(350);
 		
 		VBox display = new VBox();
 		display.getStyleClass().add("list");
@@ -120,8 +115,8 @@ public class Main extends Application {
 		HBox buttonsBox = new HBox();
 		buttonsBox.getStyleClass().add("buttons_box");
 		
-		btnAddPatient = new Button("Add Patient");
-		btnAddPatient.setOnAction(new CreateAddPatientEventHandler());
+		btnNewPatient = new Button("New Patient");
+		btnNewPatient.setOnAction(new CreateNewPatientEventHandler());
 		
 		
 		btnMoveUp = new Button("Move Up");
@@ -130,13 +125,23 @@ public class Main extends Application {
 		btnMoveDown = new Button("MoveDown");
 		btnMoveDown.setOnAction(new CreateMoveDownEventHandler());
 		
-		buttonsBox.getChildren().addAll(btnAddPatient, btnMoveUp, btnMoveDown);
+		btnAddPatient = new Button("Add Patient");
+		btnAddPatient.setOnAction(new CreateAddPatientEventHandler());
+		
+		btnHold = new Button("Hold");
+		btnHold.setOnAction(new CreateHoldEventHandler());
+		
+		btnInProgress = new Button("In-Progress");
+		
+		btnCheckout = new Button("CheckOut");
+		
+		buttonsBox.getChildren().addAll(btnNewPatient, btnMoveUp, btnMoveDown, btnAddPatient, btnHold, btnInProgress, btnCheckout);
 		
 		return buttonsBox;
 	}
 	
 	
-	public class CreateAddPatientEventHandler implements EventHandler<ActionEvent> {
+	public class CreateNewPatientEventHandler implements EventHandler<ActionEvent> {
 
 		@Override
 		public void handle(ActionEvent arg0) {
@@ -185,6 +190,57 @@ public class Main extends Application {
 				lvwWaitingPatients.getItems().remove(selected);
 			}
 
+		}
+		
+	}
+	
+	public class CreateAddPatientEventHandler implements EventHandler<ActionEvent> {
+
+		@Override
+		public void handle(ActionEvent arg0) {
+			int selectedWaiting = lvwWaitingPatients.getSelectionModel().getSelectedIndex();
+			String selWaiting = lvwWaitingPatients.getSelectionModel().getSelectedItem();
+			int selectedRoom = lvwFreeRooms.getSelectionModel().getSelectedIndex();
+			String selRoom = lvwFreeRooms.getSelectionModel().getSelectedItem();
+			
+			List<Patient> patients = azaleaHealth.getPatients();
+			List<Room> rooms = azaleaHealth.getFreeRooms();
+				
+			for(Room r: rooms) {
+				if(selRoom.equals(r.toString())) {
+					for(Patient p: patients) {
+						if(selWaiting.equals(p.toString())) {
+							r.addPatient(p);
+							p.setStatus(PatientStatus.READY);
+							lvwSortedRooms.getItems().add(r.toString());
+						}
+					}
+				}
+			}
+
+			lvwWaitingPatients.getItems().remove(selectedWaiting);
+			lvwFreeRooms.getItems().remove(selectedRoom);
+			
+
+		}
+		
+	}
+	
+	public class CreateHoldEventHandler implements EventHandler<ActionEvent> {
+
+		@Override
+		public void handle(ActionEvent arg0) {
+			List<Room> rooms = azaleaHealth.getFreeRooms();
+			String roomSel = lvwSortedRooms.getSelectionModel().getSelectedItem();
+			int roomSelected = lvwSortedRooms.getSelectionModel().getSelectedIndex();
+			
+			for(Room r: rooms) {
+				if(r.toString().equals(roomSel)) {
+					r.getPatient().setStatus(PatientStatus.ON_HOLD);
+					lvwSortedRooms.getItems().remove(roomSelected);
+					lvwSortedRooms.getItems().add(roomSelected,r.toString());
+				}
+			}
 		}
 		
 	}
