@@ -18,10 +18,6 @@ public class Room {
 		}
 		return false;			
 	}
-	
-	public void setFree(boolean isReady) {
-		this.isFree = isReady;
-	}
 
 	public int getRoomNumber() {
 		return roomNumber;

@@ -9,7 +9,7 @@ public class Hospital {
 
     public Hospital() {
         this.patients = new ArrayList<>();
-        
+        this.rooms = new ArrayList<>();
     }
 
     public Hospital(Collection<Room> rooms) {
