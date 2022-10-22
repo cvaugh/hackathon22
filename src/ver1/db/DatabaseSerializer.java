@@ -5,12 +5,13 @@ import java.nio.charset.StandardCharsets;
 import java.util.Map;
 import java.util.UUID;
 
+import ver1.Patient;
 import ver1.Utils;
 
 public final class DatabaseSerializer {
     private static final byte[] MAGIC_NUMBER = new byte[] { (byte) 0xAB, (byte) 0xCD, (byte) 0xEF };
     private static final Class<?>[] SUPPORTED_ENTRY_TYPES = { String.class, Integer.class, Byte.class, Long.class,
-            UUID.class };
+            UUID.class, Boolean.class, Patient.class };
 
     public static byte[] serialize(Database db) {
         ByteArrayOutputStream out = new ByteArrayOutputStream();
@@ -26,20 +27,26 @@ public final class DatabaseSerializer {
             out.writeBytes(Utils.intToBytes(table.getValue().size()));
             for(String key : table.getValue().map.keySet()) {
                 DatabaseEntry<?> entry = table.getValue().map.get(key);
-                System.out.println(key + ": " + entry.type.getName() + ": " + entry.get());
+                System.out.println(key + ": " + entry + ": " + entry.get());
                 if(!isEntryTypeSupported(entry.type))
                     throw new RuntimeException("Unsupported entry type: " + entry.type.getName());
                 out.writeBytes(serializeString(entry.type.getName()));
                 if(entry.type == String.class) {
-                    out.writeBytes(serializeString((String) entry.get()));
+                    out.writeBytes(serializeString(entry.get(String.class)));
                 } else if(entry.type == Integer.class) {
-                    out.writeBytes(Utils.intToBytes((int) entry.get()));
+                    out.writeBytes(Utils.intToBytes(entry.get(Integer.class)));
                 } else if(entry.type == Byte.class) {
-                    out.writeBytes(new byte[] { (byte) entry.get() });
+                    out.writeBytes(new byte[] { entry.get(Byte.class) });
                 } else if(entry.type == Long.class) {
-                    out.writeBytes(Utils.longToBytes((long) entry.get()));
+                    out.writeBytes(Utils.longToBytes(entry.get(Long.class)));
                 } else if(entry.type == UUID.class) {
-                    out.writeBytes(Utils.uuidToBytes((UUID) entry.get()));
+                    out.writeBytes(Utils.uuidToBytes(entry.get(UUID.class)));
+                } else if(entry.type == Boolean.class) {
+                    out.writeBytes(new byte[] { (byte) (entry.get(Boolean.class) ? 1 : 0) });
+                } else if(entry.type == Patient.class) {
+                    Patient p = entry.get(Patient.class);
+                    out.writeBytes(Utils.intToBytes(p.getId()));
+                    out.writeBytes(Utils.intToBytes(p.getStatus().ordinal()));
                 }
             }
         }
