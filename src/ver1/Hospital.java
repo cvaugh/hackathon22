@@ -1,10 +1,12 @@
 package ver1;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 public class Hospital {
-    protected ArrayList<Room> rooms;
-    protected ArrayList<Patient> patients;
+    protected List<Room> rooms;
+    protected List<Patient> patients;
     private int nextID = 1;
 
     public Hospital() {
@@ -14,22 +16,30 @@ public class Hospital {
 
     public Hospital(Collection<Room> rooms) {
         this();
-        this.rooms.add(rooms);
-    }
-    
-    public boolean addRoom(int rn) {
-    	Room room = new Room(rn);
-    	if (rooms.contains(room))
-    		return false;
-    	rooms.add(Room);
-    	return true;
+        this.rooms.addAll(rooms);
     }
 
-    public ArrayList<Room> getRooms() {
+    public boolean addRoom(int rn) {
+        Room room = new Room(rn);
+        if(rooms.contains(room)) return false;
+        rooms.add(room);
+        return true;
+    }
+
+    public List<Room> getRooms() {
         return rooms;
     }
+    
+    public ArrayList<Room> getFreeRooms(){
+    	ArrayList<Room> free = new ArrayList<>();
+    	for (Room r : rooms) {
+    		if (r.isFree)
+    			free.add(r);
+    	}
+    	return free;
+    }
 
-    public ArrayList<Patient> getPatients() {
+    public List<Patient> getPatients() {
         return patients;
     }
 
@@ -39,29 +49,29 @@ public class Hospital {
         return p.getId();
     }
 
-    public ArrayList<Patient> getWaiting() {
-        ArrayList<Patient> waiting = new ArrayList<>();
+    public List<Patient> getWaiting() {
+        List<Patient> waiting = new ArrayList<>();
         for(Patient p : patients) {
-            if(p.getStatus().equals("Waiting")) waiting.add(p);
+            if(p.getStatus() == PatientStatus.WAITING) waiting.add(p);
         }
         return waiting;
     }
 
-    public ArrayList<Patient> getReady() {
-        ArrayList<Patient> ready = new ArrayList<>();
+    public List<Patient> getReady() {
+        List<Patient> ready = new ArrayList<>();
         for(Patient p : patients) {
-            if(p.getStatus().equals("Ready")) ready.add(p);
+            if(p.getStatus() == PatientStatus.READY) ready.add(p);
         }
         return ready;
     }
-    
+
     @Override
     public String toString() {
-    	String s = "Hospital";
-    	for (Room r : rooms) {
-    		s += "\n" + r;
-    	}
-    	return s;
+        String s = "Hospital";
+        for(Room r : rooms) {
+            s += "\n" + r;
+        }
+        return s;
     }
 
 }
