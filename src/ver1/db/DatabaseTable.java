@@ -1,11 +1,15 @@
-package hackathon.v1.db;
+package ver1.db;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class Database {
+public class DatabaseTable {
     public final Map<String, DatabaseEntry<?>> map = new HashMap<>();
-    public byte[] passwordHash;
+    public final String name;
+    
+    public DatabaseTable(String name) {
+        this.name = name;
+    }
 
     @SuppressWarnings("unchecked")
     public <T> DatabaseEntry<T> get(String key, Class<T> type) {
@@ -19,7 +23,7 @@ public class Database {
         return (DatabaseEntry<T>) map.get(key);
     }
 
-    public void put(String key, Object obj, Class<?> type) {
+    public void set(String key, Object obj, Class<?> type) {
         map.put(key, DatabaseEntry.of(obj, type));
     }
 }
