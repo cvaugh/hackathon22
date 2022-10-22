@@ -66,11 +66,13 @@ public class Hospital {
 
     @Override
     public String toString() {
-        String s = "Hospital";
+        StringBuilder sb = new StringBuilder();
+        sb.append("Hospital");
         for(Room r : rooms) {
-            s += "\n" + r;
+            sb.append("\n");
+            sb.append(r);
         }
-        return s;
+        return sb.toString();
     }
 
 }

@@ -46,15 +46,11 @@ public class Room implements Comparable<Room> {
 
     @Override
     public String toString() {
-        String output = "Room " + roomNumber;
-
         if(isFree())
-            output += " is free.";
+            return "Room " + roomNumber + " is free.";
         else {
-            output += " has " + p.toString();
+            return "Room " + roomNumber + " has " + p.toString();
         }
-
-        return output;
     }
 
 }
