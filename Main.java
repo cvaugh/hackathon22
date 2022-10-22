@@ -1,5 +1,5 @@
-package ver1;
-
+package application;
+	
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,7 +40,7 @@ public class Main extends Application {
 	}
 
 	private Pane buildGUI() {
-		VBox buttons = buildButtons();
+		HBox buttons = buildButtons();
 		HBox displayLists = buildDisplay();
 		
 		VBox root = new VBox();
@@ -52,60 +52,59 @@ public class Main extends Application {
 	private HBox buildDisplay() {
 		HBox display = new HBox();
 		VBox vBoxWaitingPatients = buildListOfWaitingPatients();
-//		VBox vBoxFreeRooms = buildListOfFreeRooms();
+		VBox vBoxFreeRooms = buildListOfFreeRooms();
 //		VBox vBoxSortedRooms = buildListOfSortedRooms();
-		display.getChildren().add(vBoxWaitingPatients);
+		display.getChildren().addAll(vBoxWaitingPatients, vBoxFreeRooms);
 		
 		return display;
 	}
 
-//	private VBox buildListOfSortedRooms() {
-//		lvwSortedRooms.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
-//		lvwSortedRooms.setPrefHeight(150);
-//		lvwSortedRooms.setPrefWidth(120);
-//		
-//		ArrayList<Room> rooms = azaleaHealth.getRooms();
-//		
-//		for(Room r: rooms) {
-//			lvwFreeRooms.getItems().add(r.toString());
-//		}
-//		
-//		VBox display = new VBox();
-//		display.getStyleClass().add("list");
-//		display.getChildren().add(lvwSortedRooms);
-//		
-//		return display;
-//	}
+	private VBox buildListOfSortedRooms() {
+		lvwSortedRooms.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+		lvwSortedRooms.setPrefHeight(150);
+		lvwSortedRooms.setPrefWidth(120);
+		
+		List<Room> rooms = azaleaHealth.getRooms();
+		
+		for(Room r: rooms) {
+			lvwFreeRooms.getItems().add(r.toString());
+		}
+		
+		VBox display = new VBox();
+		display.getStyleClass().add("list");
+		display.getChildren().add(lvwSortedRooms);
+		
+		return display;
+	}
 
-//	private VBox buildListOfFreeRooms() {
-//		lvwFreeRooms.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
-//		lvwFreeRooms.setPrefHeight(150);
-//		lvwFreeRooms.setPrefWidth(120);
-//		
-//		ArrayList<Room> freeRooms = azaleaHealth.getFreeRooms();
-//		
-//		for(Room r: freeRooms) {
-//			lvwFreeRooms.getItems().add(r.toString());
-//		}
-//		
-//		VBox display = new VBox();
-//		display.getStyleClass().add("list");
-//		display.getChildren().add(lvwFreeRooms);
-//		
-//		return display;
-//	}
+	private VBox buildListOfFreeRooms() {
+		lvwFreeRooms.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+		lvwFreeRooms.setPrefHeight(150);
+		lvwFreeRooms.setPrefWidth(200);
+		
+		ArrayList<Room> freeRooms = azaleaHealth.getFreeRooms();
+		
+		for(Room r: freeRooms) {
+			lvwFreeRooms.getItems().add(r.toString());
+		}
+		
+		VBox display = new VBox();
+		display.getStyleClass().add("list");
+		display.getChildren().add(lvwFreeRooms);
+		
+		return display;
+	}
 
 	private VBox buildListOfWaitingPatients() {
 		lvwWaitingPatients.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 		lvwWaitingPatients.setPrefHeight(150);
 		lvwWaitingPatients.setPrefWidth(200);
 		
-		List<Patient> waiting = azaleaHealth.getWaiting();
-		int i = 0;
+		List<Patient> waiting = azaleaHealth.getPatients();
+		System.out.println(waiting);
 		for(Patient p: waiting) {
-			System.out.println(i);
-			i++;
-			lvwWaitingPatients.getItems().add(p.toString());
+			if(p.getStatus()== PatientStatus.WAITING)
+				lvwWaitingPatients.getItems().add(p.toString());
 		}
 		
 		VBox display = new VBox();
@@ -117,8 +116,8 @@ public class Main extends Application {
 	
 	
 
-	private VBox buildButtons() {
-		VBox buttonsBox = new VBox();
+	private HBox buildButtons() {
+		HBox buttonsBox = new HBox();
 		buttonsBox.getStyleClass().add("buttons_box");
 		
 		btnAddPatient = new Button("Add Patient");
@@ -126,9 +125,10 @@ public class Main extends Application {
 		
 		
 		btnMoveUp = new Button("Move Up");
-		
+		btnMoveUp.setOnAction(new CreateMoveUpEventHandler());
 		
 		btnMoveDown = new Button("MoveDown");
+		btnMoveDown.setOnAction(new CreateMoveDownEventHandler());
 		
 		buttonsBox.getChildren().addAll(btnAddPatient, btnMoveUp, btnMoveDown);
 		
@@ -156,6 +156,39 @@ public class Main extends Application {
 		}
 		
 	}
+	
+	public class CreateMoveUpEventHandler implements EventHandler<ActionEvent> {
+
+		@Override
+		public void handle(ActionEvent arg0) {
+			int selected = lvwWaitingPatients.getSelectionModel().getSelectedIndex();
+			String sel = lvwWaitingPatients.getSelectionModel().getSelectedItem();
+			
+			if(selected > 0) {
+				lvwWaitingPatients.getItems().add(selected-1,sel);
+				lvwWaitingPatients.getItems().remove(selected+1);
+			}
+
+		}
+		
+	}
+	
+	public class CreateMoveDownEventHandler implements EventHandler<ActionEvent> {
+
+		@Override
+		public void handle(ActionEvent arg0) {
+			int selected = lvwWaitingPatients.getSelectionModel().getSelectedIndex();
+			String sel = lvwWaitingPatients.getSelectionModel().getSelectedItem();
+			
+			if(selected < lvwWaitingPatients.getItems().size()-1) {
+				lvwWaitingPatients.getItems().add(selected+2,sel);
+				lvwWaitingPatients.getItems().remove(selected);
+			}
+
+		}
+		
+	}
+
 
 	public static void main(String[] args) {
 		launch(args);
@@ -163,8 +196,10 @@ public class Main extends Application {
 	
 	private Hospital createHospital() {
 		Hospital azaleaHealth = new Hospital();
-
+		azaleaHealth.addPatient();		
+		azaleaHealth.addRoom(100);
+		azaleaHealth.addRoom(101);
+		azaleaHealth.addRoom(102);
 		return azaleaHealth;
 	}
 }
-
