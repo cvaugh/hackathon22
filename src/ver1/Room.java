@@ -22,6 +22,10 @@ public class Room {
 	public int getRoomNumber() {
 		return roomNumber;
 	}
+	
+	public boolean isFree() {
+		return isFree;
+	}
 
 	public Patient getP() {
 		return p;
