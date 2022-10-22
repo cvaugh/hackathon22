@@ -94,7 +94,7 @@ public class Console {
             }
             PatientStatus newStatus = null;
             for(PatientStatus status : PatientStatus.values()) {
-                if(status.toString().equalsIgnoreCase(args[1])) {
+                if(status.name().equalsIgnoreCase(args[1])) {
                     newStatus = status;
                     break;
                 }
@@ -102,7 +102,7 @@ public class Console {
             if(newStatus == null) {
                 System.out.println("Status must be one of the following:");
                 for(PatientStatus status : PatientStatus.values()) {
-                    System.out.println("- " + status.toString().toLowerCase());
+                    System.out.println("- " + status.name().toLowerCase());
                 }
                 return;
             }
