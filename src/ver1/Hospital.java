@@ -9,11 +9,20 @@ public class Hospital {
 
     public Hospital() {
         this.patients = new ArrayList<>();
+        
     }
 
     public Hospital(Collection<Room> rooms) {
         this();
-        this.rooms = new ArrayList<>(rooms);
+        this.rooms.add(rooms);
+    }
+    
+    public boolean addRoom(int rn) {
+    	Room room = new Room(rn);
+    	if (rooms.contains(room))
+    		return false;
+    	rooms.add(Room);
+    	return true;
     }
 
     public ArrayList<Room> getRooms() {
@@ -44,6 +53,15 @@ public class Hospital {
             if(p.getStatus().equals("Ready")) ready.add(p);
         }
         return ready;
+    }
+    
+    @Override
+    public String toString() {
+    	String s = "Hospital";
+    	for (Room r : rooms) {
+    		s += "\n" + r;
+    	}
+    	return s;
     }
 
 }

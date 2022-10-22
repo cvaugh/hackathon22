@@ -7,6 +7,12 @@ public class HospitalTest {
 
 	}
 	
-	
+	public static Hospital makeHospital() {
+		Hospital h = new Hospital();
+		h.addRoom(1);
+		h.addRoom(2);
+		h.addRoom(3);
+		return h;
+	}
 
 }
