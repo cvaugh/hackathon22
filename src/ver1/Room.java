@@ -1,6 +1,6 @@
 package ver1;
 
-public class Room {
+public class Room implements Comparable<Room>{
     private int roomNumber;
     private boolean isFree;
     private Patient p = null;
@@ -41,6 +41,14 @@ public class Room {
         else {
             return String.format("Room is not free; %s", p.toString());
         }
+    }
+    
+    public int compareTo(Room r) {
+    	if (!(isFree && r.isFree)) {
+    		return this.getPatient().compareTo(r.getPatient());
+    	}
+    	return this.roomNumber = r.roomNumber;
+    		
     }
 
     @Override
