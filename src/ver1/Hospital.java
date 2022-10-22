@@ -29,14 +29,13 @@ public class Hospital {
     public List<Room> getRooms() {
         return rooms;
     }
-    
-    public ArrayList<Room> getFreeRooms(){
-    	ArrayList<Room> free = new ArrayList<>();
-    	for (Room r : rooms) {
-    		if (r.isFree)
-    			free.add(r);
-    	}
-    	return free;
+
+    public List<Room> getFreeRooms() {
+        List<Room> free = new ArrayList<>();
+        for(Room r : rooms) {
+            if(r.isFree()) free.add(r);
+        }
+        return free;
     }
 
     public List<Patient> getPatients() {

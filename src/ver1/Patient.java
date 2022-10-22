@@ -6,7 +6,7 @@ public class Patient implements Comparable<Patient> {
 
     public Patient(int id) {
         this.id = id;
-        status = PatientStatus.WAITING;
+        this.status = PatientStatus.WAITING;
     }
 
     public int getId() {
@@ -18,10 +18,7 @@ public class Patient implements Comparable<Patient> {
     }
 
     public int compareTo(Patient p) {
-        int a = status.ordinal();
-        int b = p.status.ordinal();
-
-        if(a == b) {
+        if(status == p.status) {
             return this.id - p.id;
         }
         return status.ordinal() - p.status.ordinal();
@@ -33,7 +30,7 @@ public class Patient implements Comparable<Patient> {
 
     @Override
     public String toString() {
-        return "Patient id: " + id + ", status: " + status;
+        return "Patient ID: " + id + " (" + status + ")";
     }
 
     @Override
