@@ -7,7 +7,7 @@ import java.util.Map;
 import ver1.Utils;
 
 public class Database {
-    public final Map<String, DatabaseTable> tables = new HashMap<>();
+    protected final Map<String, DatabaseTable> tables = new HashMap<>();
     public String passwordHash;
 
     public Database(String passwordHash) {
@@ -22,10 +22,13 @@ public class Database {
         return tables.get(name);
     }
 
-    public boolean addTable(String name) {
-        if(tables.containsKey(name)) return false;
-        tables.put(name, new DatabaseTable(name));
-        return true;
+    public DatabaseTable addTable(String name) {
+        if(tables.containsKey(name)) {
+            throw new RuntimeException("Table already exists: " + name);
+        }
+        DatabaseTable table = new DatabaseTable(name);
+        tables.put(name, table);
+        return table;
     }
 
     public DatabaseTable dropTable(String name) {
