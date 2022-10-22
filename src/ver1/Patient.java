@@ -30,7 +30,7 @@ public class Patient implements Comparable<Patient> {
 
     @Override
     public String toString() {
-        return "Patient ID: " + id + " (" + status + ")";
+        return "ID: " + id + " (" + status + ")";
     }
 
     @Override
