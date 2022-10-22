@@ -1,0 +1,33 @@
+.root{
+	-fx-background-color: #b5e0f0;
+	-fx-padding: 5px, 5px, 5px, 5px;
+	-fx-hgap: 5px;
+	-fx-vgap: 5px;
+}
+
+.grid {
+	-fx-padding: 5px, 5px, 5px, 5px;
+}
+
+.h_box {
+	-fx-padding: 5px;
+	-fx-spacing: 5px;
+	-fx-text-fill: #0090c0;
+}
+/*
+ * #0077c0 - deep blue
+ * #09f - light blue
+ * #cf2e2e - deep red
+ * #23A455 - green
+ */
+.buttons_box {
+	-fx-border-style:solid;
+	-fx-border-color:#0077c0;
+	-fx-background-color:#cce4f2;
+}
+
+.list{
+	-fx-background-color:#cce4f2;
+	-fx-border-style:solid;
+	-fx-border-color:#0077c0;
+}
