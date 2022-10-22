@@ -1,4 +1,4 @@
-package version1;
+package ver1;
 
 public class Room {
 	private int roomNumber;
