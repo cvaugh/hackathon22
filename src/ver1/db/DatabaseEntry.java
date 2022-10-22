@@ -1,4 +1,4 @@
-package hackathon.v1.db;
+package ver1.db;
 
 public class DatabaseEntry<T> {
     private T obj;
