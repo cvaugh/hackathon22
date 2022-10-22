@@ -1,6 +1,6 @@
 package ver1;
 
-public class Patient {
+public class Patient implements Comparable<Patient>{
 	protected int id;
 	protected String status;
 	
@@ -15,6 +15,28 @@ public class Patient {
 
 	public String getStatus() {
 		return status;
+	}
+	
+	public int compareTo(Patient p) {
+		int stat, stat2;
+		switch (status) {
+		case "Waiting": stat=0; break;
+		case "Ready": stat=1; break;
+		case "On hold": stat=2; break;
+		case "In-progress": stat=3; break;
+		case "Checked out": stat=4; break;
+		}
+		switch (p.getStatus()) {
+		case "Waiting": stat2=0; break;
+		case "Ready": stat2=1; break;
+		case "On hold": stat2=2; break;
+		case "In-progress": stat2=3; break;
+		case "Checked out": stat2=4; break;
+		}
+		if (stat==stat2) {
+			return this.id - p.id;
+		}
+		return stat-stat2;
 	}
 
 	public void setStatus(String status) {
