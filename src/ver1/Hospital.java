@@ -1,6 +1,7 @@
 package ver1;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
 
 public class Hospital {
     protected ArrayList<Room> rooms;
@@ -9,20 +10,19 @@ public class Hospital {
 
     public Hospital() {
         this.patients = new ArrayList<>();
-        
+
     }
 
     public Hospital(Collection<Room> rooms) {
         this();
-        this.rooms.add(rooms);
+        this.rooms.addAll(rooms);
     }
-    
+
     public boolean addRoom(int rn) {
-    	Room room = new Room(rn);
-    	if (rooms.contains(room))
-    		return false;
-    	rooms.add(Room);
-    	return true;
+        Room room = new Room(rn);
+        if(rooms.contains(room)) return false;
+        rooms.add(room);
+        return true;
     }
 
     public ArrayList<Room> getRooms() {
@@ -54,14 +54,14 @@ public class Hospital {
         }
         return ready;
     }
-    
+
     @Override
     public String toString() {
-    	String s = "Hospital";
-    	for (Room r : rooms) {
-    		s += "\n" + r;
-    	}
-    	return s;
+        String s = "Hospital";
+        for(Room r : rooms) {
+            s += "\n" + r;
+        }
+        return s;
     }
 
 }
