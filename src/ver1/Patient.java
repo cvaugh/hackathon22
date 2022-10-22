@@ -30,7 +30,7 @@ public class Patient implements Comparable<Patient> {
 
     @Override
     public String toString() {
-        return "Patient ID: " + id + " (" + status + ")";
+        return "ID: " + id + " (" + status + ")";
     }
 
     @Override
@@ -38,14 +38,10 @@ public class Patient implements Comparable<Patient> {
         if(this == obj) {
             return true;
         }
-        if(obj == null) {
+        if(obj == null || getClass() != obj.getClass()) {
             return false;
         }
-        if(getClass() != obj.getClass()) {
-            return false;
-        }
-        Patient other = (Patient) obj;
-        return id == other.id;
+        return id == ((Patient) obj).id;
     }
 
 }
